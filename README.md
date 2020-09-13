@@ -1,4 +1,4 @@
-# The Ocean
+# The Ocean 🌊
 
 Smartcontract for DeFi
 
