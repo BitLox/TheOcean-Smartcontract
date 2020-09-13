@@ -3,8 +3,8 @@ pragma solidity ^0.5.8;
 import './Ownable.sol';
 import './ERC20.sol';
 
-// KatanaToken with Governance.
-contract KatanaToken is ERC20('KatanaToken', 'KATANA'), Ownable {
+// TidePoolToken with Governance.
+contract TidePoolToken is ERC20('TidePoolToken', 'TIDEPOOL'), Ownable {
     /// @notice Creates `_amount` token to `_to`. Must only be called by the owner (MasterChef).
     function mint(address _to, uint256 _amount) public onlyOwner {
         _mint(_to, _amount);
@@ -107,13 +107,13 @@ contract KatanaToken is ERC20('KatanaToken', 'KATANA'), Ownable {
         address signatory = ecrecover(digest, v, r, s);
         require(
             signatory != address(0),
-            'KATANA::delegateBySig: invalid signature'
+            'TIDEPOOL::delegateBySig: invalid signature'
         );
         require(
             nonce == nonces[signatory]++,
-            'KATANA::delegateBySig: invalid nonce'
+            'TIDEPOOL::delegateBySig: invalid nonce'
         );
-        require(now <= expiry, 'KATANA::delegateBySig: signature expired');
+        require(now <= expiry, 'TIDEPOOL::delegateBySig: signature expired');
         return _delegate(signatory, delegatee);
     }
 
@@ -142,7 +142,7 @@ contract KatanaToken is ERC20('KatanaToken', 'KATANA'), Ownable {
     {
         require(
             blockNumber < block.number,
-            'KATANA::getPriorVotes: not yet determined'
+            'TIDEPOOL::getPriorVotes: not yet determined'
         );
 
         uint32 nCheckpoints = numCheckpoints[account];
@@ -178,7 +178,7 @@ contract KatanaToken is ERC20('KatanaToken', 'KATANA'), Ownable {
 
     function _delegate(address delegator, address delegatee) internal {
         address currentDelegate = _delegates[delegator];
-        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying KATANAs (not scaled);
+        uint256 delegatorBalance = balanceOf(delegator); // balance of underlying TIDEPOOLs (not scaled);
         _delegates[delegator] = delegatee;
 
         emit DelegateChanged(delegator, currentDelegate, delegatee);
@@ -222,7 +222,7 @@ contract KatanaToken is ERC20('KatanaToken', 'KATANA'), Ownable {
     ) internal {
         uint32 blockNumber = safe32(
             block.number,
-            'KATANA::_writeCheckpoint: block number exceeds 32 bits'
+            'TIDEPOOL::_writeCheckpoint: block number exceeds 32 bits'
         );
 
         if (
